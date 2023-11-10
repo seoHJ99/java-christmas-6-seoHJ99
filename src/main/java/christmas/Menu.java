@@ -25,4 +25,12 @@ public enum Menu {
         this.sort = sort;
         this.price = price;
     }
+
+    public Sort getSort() {
+        return sort;
+    }
+
+    public int getPrice() {
+        return price;
+    }
 }
