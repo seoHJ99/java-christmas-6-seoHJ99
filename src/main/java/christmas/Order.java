@@ -21,5 +21,21 @@ public class Order {
         }
         return menuAndNumber;
     }
-    
+
+    public boolean validateMenuSort(Map<Menu, Integer> menuAndNumber){
+        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+        boolean onlyBeverage = true;
+        while (menus.hasNext()) {
+            Menu.Sort sort = menus.next().getSort();
+            if(sort != Menu.Sort.음료){
+                onlyBeverage = false;
+                break;
+            }
+        }
+        if(onlyBeverage == false){
+            orderable = true;
+            return orderable;
+        }
+        return orderable;
+    }
 }
