@@ -8,7 +8,7 @@ public class DiscountEvent {
     public boolean eventTarget = false;
     private int christmasDiscountPrice = 0;
     private int specialDiscountPrice = 0;
-    private boolean champagnePresentation = false;
+    private int champagnePresentationCount = 0;
     private int weekDicountedPrice = 0;
     private final int discountPrice = 2023;
 
@@ -62,7 +62,7 @@ public class DiscountEvent {
 
     public int getChampagnePresentation(int fullPrice) {
         if (fullPrice >= 120_000) {
-            champagnePresentation = true;
+            champagnePresentationCount ++;
         }
         return Menu.샴페인.getPrice();
     }
@@ -71,8 +71,8 @@ public class DiscountEvent {
         int fullPrice = specialDiscountPrice
                 + christmasDiscountPrice
                 + weekDicountedPrice;
-        if(champagnePresentation){
-            fullPrice += Menu.샴페인.getPrice();
+        if(champagnePresentationCount > 0){
+            fullPrice += Menu.샴페인.getPrice() * champagnePresentationCount;
         }
         return fullPrice;
     }
