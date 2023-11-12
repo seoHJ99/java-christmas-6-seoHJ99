@@ -9,7 +9,7 @@ public class DiscountEvent {
     private int christmasDiscountPrice = 0;
     private int specialDiscountPrice = 0;
     private boolean champagnePresentation = false;
-
+    private int weekDicountedPrice = 0;
     private final int discountPrice = 2023;
 
     public void validate(int fullPrice) {
@@ -27,7 +27,8 @@ public class DiscountEvent {
                 targetMenuSort++;
             }
         }
-        return targetMenuSort * discountPrice;
+        weekDicountedPrice = targetMenuSort * discountPrice;
+        return weekDicountedPrice;
     }
 
     public int getWeekendDiscountPrice(Map<Menu, Integer> menuAndNumber) {
@@ -39,7 +40,8 @@ public class DiscountEvent {
                 targetMenuSort++;
             }
         }
-        return targetMenuSort * discountPrice;
+        weekDicountedPrice = targetMenuSort * discountPrice;
+        return weekDicountedPrice;
     }
 
     public int getChristmasDDayDiscount(int date) {
@@ -63,5 +65,15 @@ public class DiscountEvent {
             champagnePresentation = true;
         }
         return Menu.샴페인.getPrice();
+    }
+
+    public int getFullDiscountedPrice(){
+        int fullPrice = specialDiscountPrice
+                + christmasDiscountPrice
+                + weekDicountedPrice;
+        if(champagnePresentation){
+            fullPrice += Menu.샴페인.getPrice();
+        }
+        return fullPrice;
     }
 }
