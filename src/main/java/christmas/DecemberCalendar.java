@@ -21,6 +21,9 @@ public class DecemberCalendar {
             this.dates = Arrays.stream(date).boxed().collect(Collectors.toList());
         }
 
+        public List<Integer> getDates() {
+            return dates;
+        }
     }
     public Day findDay(int date) {
         return Arrays.stream(Day.values())
