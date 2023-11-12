@@ -18,5 +18,28 @@ public class DiscountEvent {
         }
     }
 
+    public int getWeekdayDiscountPrice(Map<Menu, Integer> menuAndNumber) {
+        int targetMenuSort = 0;
+        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+        while (menus.hasNext()) {
+            Menu.Sort sort = menus.next().getSort();
+            if (sort == Menu.Sort.디저트) {
+                targetMenuSort++;
+            }
+        }
+        return targetMenuSort * discountPrice;
+    }
+
+    public int getWeekendDiscountPrice(Map<Menu, Integer> menuAndNumber) {
+        int targetMenuSort = 0;
+        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+        while (menus.hasNext()) {
+            Menu.Sort sort = menus.next().getSort();
+            if (sort == Menu.Sort.메인) {
+                targetMenuSort++;
+            }
+        }
+        return targetMenuSort * discountPrice;
+    }
 
 }
