@@ -42,4 +42,19 @@ public class DiscountEvent {
         return targetMenuSort * discountPrice;
     }
 
+    public int getChristmasDDayDiscount(int date) {
+        if (date <= 25) {
+            christmasDiscountPrice = (date - 1) * 100 + 1000;
+            return christmasDiscountPrice;
+        }
+        return christmasDiscountPrice;
+    }
+
+    public int getSpecialDiscount(int date) {
+        if (date == 25 || DecemberCalendar.Day.SUNDAY.getDates().contains(date)) {
+            specialDiscountPrice = 1000;
+            return specialDiscountPrice;
+        }
+        return specialDiscountPrice;
+    }
 }
