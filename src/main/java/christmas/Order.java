@@ -8,6 +8,7 @@ import java.util.Map;
 public class Order {
     private Map<Menu, Integer> menuAndNumber;
     private boolean orderable;
+    private int fullPrice;
 
     public Map<Menu, Integer> classifyOrder (List<String> order){
         for(String nameAndNumber : order){
@@ -22,8 +23,8 @@ public class Order {
         return menuAndNumber;
     }
 
-    public boolean validateMenuSort(Map<Menu, Integer> menuAndNumber){
-        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+    public boolean validateMenuSort(Map<Menu, Integer> order){
+        Iterator<Menu> menus = order.keySet().iterator();
         boolean onlyBeverage = true;
         while (menus.hasNext()) {
             Menu.Sort sort = menus.next().getSort();
@@ -37,5 +38,14 @@ public class Order {
             return orderable;
         }
         return orderable;
+    }
+
+    public int sumAllOrderMenuPrice(Map<Menu, Integer> order){
+        Iterator<Menu> menus = order.keySet().iterator();
+        while (menus.hasNext()) {
+            Menu menu = menus.next();
+            fullPrice += menu.getPrice();
+        }
+        return fullPrice;
     }
 }
