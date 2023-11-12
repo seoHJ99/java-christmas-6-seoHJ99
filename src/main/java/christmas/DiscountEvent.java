@@ -57,4 +57,11 @@ public class DiscountEvent {
         }
         return specialDiscountPrice;
     }
+
+    public int getChampagnePresentation(int fullPrice) {
+        if (fullPrice >= 120_000) {
+            champagnePresentation = true;
+        }
+        return Menu.샴페인.getPrice();
+    }
 }
