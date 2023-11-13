@@ -100,7 +100,7 @@ public class DiscountEvent {
         return 0;
     }
 
-    public Map<String, Integer> getAllDiscountsMap(){
+    public Map<String, Integer> getAllDiscountsMap() {
         return allDiscounts;
     }
 }
