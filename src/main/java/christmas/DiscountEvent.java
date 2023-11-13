@@ -22,7 +22,7 @@ public class DiscountEvent {
     }
 
     public boolean eventTarget = false;
-    private Map<String, Integer> allDiscounts;
+    private Map<String, Integer> allDiscounts = new HashMap<>();
     private static Map<Menu, Integer> orderMenu;
     private static int date;
     private final int SPECIAL_DISCOUNT_AMOUNT = 1000;
@@ -41,9 +41,6 @@ public class DiscountEvent {
 
     public int getDiscountPerSort() {
         DecemberCalendar.Day day = new DecemberCalendar().findDay(date);
-        if (day.getEvent() == null) {
-            return 0;
-        }
         DayEvent event = Arrays.stream(DayEvent.values())
                 .filter(value -> day.getEvent().equals(value))
                 .findAny()
@@ -88,7 +85,7 @@ public class DiscountEvent {
     }
 
     public int getSpecialDiscount() {
-        if (date == 25 || new DecemberCalendar().findDay(date).equals(DecemberCalendar.Day.SATURDAY)) {
+        if (date == 25 || DecemberCalendar.Day.SUNDAY.getDates().contains(date)) {
             allDiscounts.put("특별 할인", SPECIAL_DISCOUNT_AMOUNT);
             return SPECIAL_DISCOUNT_AMOUNT;
         }
@@ -103,7 +100,7 @@ public class DiscountEvent {
         return 0;
     }
 
-    public Map<String, Integer> getAllDiscountsMap(int actualFullPrice){
+    public Map<String, Integer> getAllDiscountsMap(){
         return allDiscounts;
     }
 }

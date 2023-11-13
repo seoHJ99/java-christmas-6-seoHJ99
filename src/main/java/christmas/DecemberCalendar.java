@@ -12,7 +12,7 @@ public class DecemberCalendar {
         THURSDAY(DiscountEvent.DayEvent.평일_할인, 7, 14, 21, 28),
         FRIDAY(DiscountEvent.DayEvent.주말_할인, 1, 8, 15, 22, 29),
         SATURDAY(DiscountEvent.DayEvent.주말_할인, 2, 9, 16, 23, 30),
-        SUNDAY(null, 3, 10, 17, 24, 31);
+        SUNDAY(DiscountEvent.DayEvent.평일_할인, 3, 10, 17, 24, 31);
 
         private DiscountEvent.DayEvent event;
         private List<Integer> dates;

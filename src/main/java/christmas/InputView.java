@@ -20,6 +20,7 @@ public class InputView {
         String input = Console.readLine();
 //            검증함수 추가
         List<String> order = new ArrayList<>(Arrays.asList(input.split(",")));
+        System.out.println();
         return order;
     }
 }

@@ -12,14 +12,21 @@ public class OutputView {
             Menu menu = orderMenu.next();
             System.out.println(menu.name() + order.get(menu) + "개");
         }
+        System.out.println();
     }
 
-    public void outPresentation(int champagneCount){
+    public void outFullPrice(int fullPrice){
+        System.out.println("<할인 전 총 주문 금액>");
+        System.out.println(fullPrice +"\n");
+    }
+
+    public void outPresentation(Map<String, Integer> benefits){
         System.out.println("<증정 메뉴>");
-        if(champagneCount>0){
-            System.out.println("샴페인 " + champagneCount + "개");
+        if(benefits.get("증정 이벤트") != null){
+            System.out.println("샴페인 1개\n");
+            return;
         }
-        System.out.println("없음");
+        System.out.println("없음\n");
     }
 
     public void outBenefits(Map<String, Integer> discounts){
@@ -28,23 +35,17 @@ public class OutputView {
         while (discountName.hasNext()){
             String name = discountName.next();
             int discountedPrice = discounts.get(name);
-            System.out.println(name + ":" + "-" + discountedPrice);
+            System.out.println(name + ":" + "-" + discountedPrice +"");
         }
         if(discounts.size() == 0){
             System.out.println("없음");
         }
+        System.out.println();
     }
 
-    public void outSumBenefits(Map<String, Integer> discounts){
-        Iterator<String> discountName = discounts.keySet().iterator();
-        int sumBenefits = 0;
-        while (discountName.hasNext()){
-            String name = discountName.next();
-            int discountedPrice = discounts.get(name);
-            sumBenefits += discountedPrice;
-        }
+    public void outSumBenefits(int sumBenefits){
         System.out.println("<총 혜택 금액>");
-        System.out.println(sumBenefits + "원");
+        System.out.println(sumBenefits + "원\n");
     }
 
     public void outActualPayment(int fullPrice, Map<String, Integer> discounts){
@@ -58,13 +59,13 @@ public class OutputView {
             }
         }
         System.out.println("<할인 후 예상 결제 금액>");
-        System.out.println(fullPrice - sumDiscountedPrice);
+        System.out.println(fullPrice - sumDiscountedPrice +"\n");
     }
 
     public void outBadge(int sumBenefits){
         Badge badge = new Badge();
         Badge.BadgeSort badgeSort = badge.getBedge(sumBenefits);
         System.out.println("<12월 이벤트 배지>");
-        System.out.println(badgeSort.name());
+        System.out.println(badgeSort.name() +"\n");
     }
 }
