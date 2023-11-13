@@ -1,16 +1,37 @@
 package christmas;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 
 public class DiscountEvent {
 
+    enum DayEvent {
+        평일_할인(() -> getWeekdayDiscountPrice()),
+
+        주말_할인(() -> getWeekendDiscountPrice());
+
+        private Supplier<Integer> discountCalculator;
+
+        DayEvent(Supplier<Integer> discountCalculator) {
+            this.discountCalculator = discountCalculator;
+        }
+
+        public int getWeekDiscount() {
+            return discountCalculator.get();
+        }
+    }
+
     public boolean eventTarget = false;
-    private int christmasDiscountPrice = 0;
-    private int specialDiscountPrice = 0;
-    private int champagnePresentationCount = 0;
-    private int weekDicountedPrice = 0;
-    private final int discountPrice = 2023;
+    private Map<String, Integer> allDiscounts;
+    private static Map<Menu, Integer> orderMenu;
+    private static int date;
+    private final int SPECIAL_DISCOUNT_AMOUNT = 1000;
+    private static final int WEEK_DISCOUNT_PRICE = 2023;
+
+    public DiscountEvent(Map<Menu, Integer> orderMenu, int date) {
+        this.orderMenu = orderMenu;
+        this.date = date;
+    }
 
     public void validate(int fullPrice) {
         if (fullPrice < 10000) {
@@ -18,62 +39,71 @@ public class DiscountEvent {
         }
     }
 
-    public int getWeekdayDiscountPrice(Map<Menu, Integer> menuAndNumber) {
+    public int getDiscountPerSort() {
+        DecemberCalendar.Day day = new DecemberCalendar().findDay(date);
+        if (day.getEvent() == null) {
+            return 0;
+        }
+        DayEvent event = Arrays.stream(DayEvent.values())
+                .filter(value -> day.getEvent().equals(value))
+                .findAny()
+                .orElse(null);
+        allDiscounts.put(event.name(), event.getWeekDiscount());
+        return event.getWeekDiscount();
+    }
+
+
+    public static int getWeekdayDiscountPrice() {
         int targetMenuSort = 0;
-        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+        Iterator<Menu> menus = orderMenu.keySet().iterator();
         while (menus.hasNext()) {
-            Menu.Sort sort = menus.next().getSort();
+            Menu name = menus.next();
+            Menu.Sort sort = name.getSort();
             if (sort == Menu.Sort.디저트) {
-                targetMenuSort++;
+                targetMenuSort += orderMenu.get(name);
             }
         }
-        weekDicountedPrice = targetMenuSort * discountPrice;
-        return weekDicountedPrice;
+        return targetMenuSort * WEEK_DISCOUNT_PRICE;
     }
 
-    public int getWeekendDiscountPrice(Map<Menu, Integer> menuAndNumber) {
+    public static int getWeekendDiscountPrice() {
         int targetMenuSort = 0;
-        Iterator<Menu> menus = menuAndNumber.keySet().iterator();
+        Iterator<Menu> menus = orderMenu.keySet().iterator();
         while (menus.hasNext()) {
-            Menu.Sort sort = menus.next().getSort();
+            Menu name = menus.next();
+            Menu.Sort sort = name.getSort();
             if (sort == Menu.Sort.메인) {
-                targetMenuSort++;
+                targetMenuSort += orderMenu.get(name);
             }
         }
-        weekDicountedPrice = targetMenuSort * discountPrice;
-        return weekDicountedPrice;
+        return targetMenuSort * WEEK_DISCOUNT_PRICE;
     }
 
-    public int getChristmasDDayDiscount(int date) {
+    public int getChristmasDDayDiscount() {
         if (date <= 25) {
-            christmasDiscountPrice = (date - 1) * 100 + 1000;
-            return christmasDiscountPrice;
+            allDiscounts.put("크리스마스 디데이 할인", (date - 1) * 100 + 1000);
+            return (date - 1) * 100 + 1000;
         }
-        return christmasDiscountPrice;
+        return 0;
     }
 
-    public int getSpecialDiscount(int date) {
-        if (date == 25 || DecemberCalendar.Day.SUNDAY.getDates().contains(date)) {
-            specialDiscountPrice = 1000;
-            return specialDiscountPrice;
+    public int getSpecialDiscount() {
+        if (date == 25 || new DecemberCalendar().findDay(date).equals(DecemberCalendar.Day.SATURDAY)) {
+            allDiscounts.put("특별 할인", SPECIAL_DISCOUNT_AMOUNT);
+            return SPECIAL_DISCOUNT_AMOUNT;
         }
-        return specialDiscountPrice;
+        return 0;
     }
 
     public int getChampagnePresentation(int fullPrice) {
         if (fullPrice >= 120_000) {
-            champagnePresentationCount ++;
+            allDiscounts.put("증정 이벤트", 25000);
+            return Menu.샴페인.getPrice();
         }
-        return Menu.샴페인.getPrice();
+        return 0;
     }
 
-    public int getFullDiscountedPrice(){
-        int fullPrice = specialDiscountPrice
-                + christmasDiscountPrice
-                + weekDicountedPrice;
-        if(champagnePresentationCount > 0){
-            fullPrice += Menu.샴페인.getPrice() * champagnePresentationCount;
-        }
-        return fullPrice;
+    public Map<String, Integer> getAllDiscountsMap(int actualFullPrice){
+        return allDiscounts;
     }
 }
