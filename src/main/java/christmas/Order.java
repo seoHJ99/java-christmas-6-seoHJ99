@@ -1,12 +1,9 @@
 package christmas;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Order {
-    private Map<Menu, Integer> menuAndNumber;
+    private Map<Menu, Integer> menuAndNumber = new HashMap<>();
     private boolean orderable;
     private int fullPrice;
 
@@ -44,7 +41,7 @@ public class Order {
         Iterator<Menu> menus = order.keySet().iterator();
         while (menus.hasNext()) {
             Menu menu = menus.next();
-            fullPrice += menu.getPrice();
+            fullPrice += menu.getPrice() * order.get(menu);
         }
         return fullPrice;
     }
