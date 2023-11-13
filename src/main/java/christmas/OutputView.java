@@ -1,9 +1,12 @@
 package christmas;
 
+import java.text.NumberFormat;
 import java.util.Iterator;
 import java.util.Map;
 
 public class OutputView {
+
+    private NumberFormat numberFormat = NumberFormat.getInstance();
 
     public void outOrder(Map<Menu, Integer> order){
         System.out.println("<주문메뉴>");
@@ -17,7 +20,7 @@ public class OutputView {
 
     public void outFullPrice(int fullPrice){
         System.out.println("<할인 전 총 주문 금액>");
-        System.out.println(fullPrice +"\n");
+        System.out.println(numberFormat.format(fullPrice) +"\n");
     }
 
     public void outPresentation(Map<String, Integer> benefits){
@@ -35,7 +38,7 @@ public class OutputView {
         while (discountName.hasNext()){
             String name = discountName.next();
             int discountedPrice = discounts.get(name);
-            System.out.println(name + ":" + "-" + discountedPrice +"");
+            System.out.println(name + ":" + "-" + numberFormat.format(discountedPrice));
         }
         if(discounts.size() == 0){
             System.out.println("없음");
@@ -45,7 +48,7 @@ public class OutputView {
 
     public void outSumBenefits(int sumBenefits){
         System.out.println("<총 혜택 금액>");
-        System.out.println(sumBenefits + "원\n");
+        System.out.println(numberFormat.format(sumBenefits) + "원\n");
     }
 
     public void outActualPayment(int fullPrice, Map<String, Integer> discounts){
@@ -59,7 +62,7 @@ public class OutputView {
             }
         }
         System.out.println("<할인 후 예상 결제 금액>");
-        System.out.println(fullPrice - sumDiscountedPrice +"\n");
+        System.out.println(numberFormat.format(fullPrice - sumDiscountedPrice) +"\n");
     }
 
     public void outBadge(int sumBenefits){
