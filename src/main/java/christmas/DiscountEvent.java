@@ -22,7 +22,7 @@ public class DiscountEvent {
     }
 
     public boolean eventTarget = false;
-    private Map<String, Integer> allDiscounts = new HashMap<>();
+    private Map<String, Integer> allDiscounts = Map.of("크리스마스 디데이 할인",0,"평일 할인",0,"주말 할인",0,"특별 할인",0,"증정 이벤트",0);
     private static Map<Menu, Integer> orderMenu;
     private static int date;
     private final int SPECIAL_DISCOUNT_AMOUNT = 1000;
@@ -34,10 +34,12 @@ public class DiscountEvent {
     }
 
     public void validate(int fullPrice) {
-        if (fullPrice < 10000) {
+        if (fullPrice >= 1_0000) {
             eventTarget = true;
         }
     }
+
+    public int
 
     public int getDiscountPerSort() {
         DecemberCalendar.Day day = new DecemberCalendar().findDay(date);
@@ -45,10 +47,9 @@ public class DiscountEvent {
                 .filter(value -> day.getEvent().equals(value))
                 .findAny()
                 .orElse(null);
-        allDiscounts.put(event.name(), event.getWeekDiscount());
+        allDiscounts.put(event.name().replace("_"," "), event.getWeekDiscount());
         return event.getWeekDiscount();
     }
-
 
     public static int getWeekdayDiscountPrice() {
         int targetMenuSort = 0;
@@ -101,11 +102,22 @@ public class DiscountEvent {
     }
 
     public Map<String, Integer> getAllDiscountsMap(int fullPrice) {
-        int specialDiscount = getSpecialDiscount();
-        int dayDiscount = getDiscountPerSort();
-        int christmasDDayDiscount = getChristmasDDayDiscount();
-        int champagnePresentation = getChampagnePresentation(fullPrice);
-        allDiscounts.put("allBenefits", specialDiscount+dayDiscount+christmasDDayDiscount+champagnePresentation);
+        allDiscounts.clear();
+        getSpecialDiscount();
+        getDiscountPerSort();
+        getChristmasDDayDiscount();
+        getChampagnePresentation(fullPrice);
         return allDiscounts;
+    }
+
+    public int getAllDiscountPrice(Map<String, Integer> discounts){
+        int sumDiscountedPrice = 0;
+        Iterator<String> discountName = discounts.keySet().iterator();
+        while (discountName.hasNext()) {
+            String name = discountName.next();
+            int discountedPrice = discounts.get(name);
+            sumDiscountedPrice += discountedPrice;
+        }
+        return sumDiscountedPrice;
     }
 }
