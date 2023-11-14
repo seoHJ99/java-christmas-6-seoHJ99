@@ -14,7 +14,7 @@ public class Badge {
         }
     }
 
-    public BadgeSort getBedge(int discountedPrice) {
+    public BadgeSort findBadge(int discountedPrice) {
         BadgeSort presentation = BadgeSort.없음;
         for (BadgeSort badge : BadgeSort.values()) {
             if (badge.discountedPrice <= discountedPrice) {
