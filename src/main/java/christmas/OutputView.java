@@ -9,7 +9,7 @@ public class OutputView {
     private NumberFormat numberFormat = NumberFormat.getInstance();
 
     public void outOrder(Map<Menu, Integer> order) {
-        System.out.println("<주문메뉴>");
+        System.out.println("<주문 메뉴>");
         Iterator<Menu> orderMenu = order.keySet().iterator();
         while (orderMenu.hasNext()) {
             Menu menu = orderMenu.next();
@@ -19,13 +19,13 @@ public class OutputView {
     }
 
     public void outFullPrice(int fullPrice) {
-        System.out.println("<할인 전 총 주문 금액>");
+        System.out.println("<할인 전 총주문 금액>");
         System.out.println(numberFormat.format(fullPrice) + "\n");
     }
 
     public void outPresentation(Map<String, Integer> benefits) {
         System.out.println("<증정 메뉴>");
-        if (benefits.get("증정 이벤트") != null) {
+        if (benefits.get("증정 이벤트")!= null && benefits.get("증정 이벤트") != 0 ) {
             System.out.println("샴페인 1개\n");
             return;
         }
@@ -35,20 +35,26 @@ public class OutputView {
     public void outBenefits(Map<String, Integer> discounts) {
         System.out.println("<혜택 내역>");
         Iterator<String> discountName = discounts.keySet().iterator();
+        boolean hasBenefit = false;
         while (discountName.hasNext()) {
             String name = discountName.next();
             int discountedPrice = discounts.get(name);
-            System.out.println(name + ":" + "-" + numberFormat.format(discountedPrice));
+            if (discountedPrice != 0) {
+                hasBenefit = true;
+                System.out.println(name + ":" + "-" + numberFormat.format(discountedPrice) +"\n");
+            }
         }
-        if (discounts.size() == 0) {
-            System.out.println("없음");
+        if (hasBenefit == false) {
+            System.out.println("없음\n");
         }
-        System.out.println();
     }
 
     public void outSumBenefits(int sumBenefits) {
-        System.out.println("<총 혜택 금액>");
-        System.out.println(numberFormat.format(sumBenefits) + "원\n");
+        System.out.println("<총혜택 금액>");
+        if(sumBenefits >0){
+            System.out.print("-");
+        }
+        System.out.println( numberFormat.format(sumBenefits) + "원\n");
     }
 
     public void outActualPayment(int fullPrice, Map<String, Integer> discounts) {
@@ -70,5 +76,10 @@ public class OutputView {
         Badge.BadgeSort badgeSort = badge.getBedge(sumBenefits);
         System.out.println("<12월 이벤트 배지>");
         System.out.println(badgeSort.name() + "\n");
+    }
+
+    public void outAllAboutDiscount(Map<String, Integer> allDiscounts) {
+        outPresentation(allDiscounts);
+        outBenefits(allDiscounts);
     }
 }
