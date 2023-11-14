@@ -3,10 +3,14 @@ package christmas;
 import java.util.*;
 
 public class Order {
-    private Map<Menu, Integer> menuAndNumber = new HashMap<>();
+    private Map<Menu, Integer> order = new HashMap<>();
     private int fullPrice;
 
-    public Map<Menu, Integer> classifyOrder (List<String> order){
+    public Map<Menu, Integer> getOrder() {
+        return order;
+    }
+
+    public Order (List<String> order){
         validateMenuForm(order);
         for(String nameAndNumber : order){
             String name = nameAndNumber.split("-")[0];
@@ -16,10 +20,10 @@ public class Order {
                     .findAny()
                     .orElse(null);
             validateMenuName(menu);
-            validateDuplication(menuAndNumber, menu);
-            menuAndNumber.put(menu, number);
+            validateDuplication(this.order, menu);
+            this.order.put(menu, number);
         }
-        return menuAndNumber;
+        validateMenuSort(this.order);
     }
 
     public void validateDuplication(Map<Menu, Integer> order, Menu menu){
@@ -58,7 +62,7 @@ public class Order {
             if(splitOrder[0].matches(".*[0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?].*")){
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
-            if(!splitOrder[1].matches("[0-9]+")){
+            if(!splitOrder[1].matches("[0-9]+") || Integer.parseInt(splitOrder[1]) < 0){
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
         }
