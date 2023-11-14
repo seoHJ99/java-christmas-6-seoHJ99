@@ -11,7 +11,7 @@ public class InputView {
     public int readDate() {
         System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
         String input = Console.readLine();
-//            검증 함수 추가
+        validateDate(input);
         return Integer.parseInt(input);
     }
 
@@ -31,5 +31,33 @@ public class InputView {
         if (dateInt < 1 || dateInt > 31) {
             throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }
+    }
+
+    public int infiniteDateInputsUntilRight() {
+        int date = 0;
+        while (true) {
+            try {
+                date = readDate();
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                System.out.println();
+            }
+        }
+        return date;
+    }
+
+    public Order infiniteOrderInputUntilRight() {
+        Order order;
+        while (true) {
+            try {
+                List<String> orderInput = readOrder();
+                order = new Order(orderInput);
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return order;
     }
 }
