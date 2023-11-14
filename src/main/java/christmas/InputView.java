@@ -9,7 +9,7 @@ import java.util.List;
 public class InputView {
 
     public int readDate() {
-        System.out.println("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
+        System.out.println("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다. \n12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)");
         String input = Console.readLine();
         validateDate(input);
         return Integer.parseInt(input);
@@ -25,7 +25,7 @@ public class InputView {
 
     private void validateDate(String date) {
         if (!date.matches("[0-9]+")) {
-            throw new IllegalArgumentException("[ERROR] 숫자가 아닌 값이 입력되었습니다.");
+            throw new IllegalArgumentException("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
         }
         int dateInt = Integer.parseInt(date);
         if (dateInt < 1 || dateInt > 31) {
