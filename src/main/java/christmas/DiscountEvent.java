@@ -21,8 +21,7 @@ public class DiscountEvent {
         }
     }
 
-    public boolean eventTarget = false;
-    private Map<String, Integer> allDiscounts = Map.of("크리스마스 디데이 할인",0,"평일 할인",0,"주말 할인",0,"특별 할인",0,"증정 이벤트",0);
+    private Map<String, Integer> allDiscounts = new HashMap<>();
     private static Map<Menu, Integer> orderMenu;
     private static int date;
     private final int SPECIAL_DISCOUNT_AMOUNT = 1000;
@@ -33,13 +32,20 @@ public class DiscountEvent {
         this.date = date;
     }
 
-    public void validate(int fullPrice) {
+    public boolean validateDiscountTarget(int fullPrice) {
         if (fullPrice >= 1_0000) {
-            eventTarget = true;
+            return true;
         }
+        return false;
     }
 
-    public int
+    public  Map<String, Integer> validateAndGetAllDiscount(int fullPrice){
+        Map<String, Integer> dicount = null;
+        if(validateDiscountTarget(fullPrice)){
+           getAllDiscountsMap(fullPrice);
+        }
+        return allDiscounts;
+    }
 
     public int getDiscountPerSort() {
         DecemberCalendar.Day day = new DecemberCalendar().findDay(date);
@@ -102,7 +108,6 @@ public class DiscountEvent {
     }
 
     public Map<String, Integer> getAllDiscountsMap(int fullPrice) {
-        allDiscounts.clear();
         getSpecialDiscount();
         getDiscountPerSort();
         getChristmasDDayDiscount();
@@ -111,6 +116,9 @@ public class DiscountEvent {
     }
 
     public int getAllDiscountPrice(Map<String, Integer> discounts){
+        if(discounts == null){
+            return 0;
+        }
         int sumDiscountedPrice = 0;
         Iterator<String> discountName = discounts.keySet().iterator();
         while (discountName.hasNext()) {
