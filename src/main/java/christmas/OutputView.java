@@ -41,7 +41,7 @@ public class OutputView {
             int discountedPrice = discounts.get(name);
             if (discountedPrice != 0) {
                 hasBenefit = true;
-                System.out.println(name + ":" + "-" + numberFormat.format(discountedPrice) +"\n");
+                System.out.println(name + ":" + "-" + numberFormat.format(discountedPrice) );
             }
         }
         if (hasBenefit == false) {
@@ -73,7 +73,7 @@ public class OutputView {
 
     public void outBadge(int sumBenefits) {
         Badge badge = new Badge();
-        Badge.BadgeSort badgeSort = badge.getBedge(sumBenefits);
+        Badge.BadgeSort badgeSort = badge.findBadge(sumBenefits);
         System.out.println("<12월 이벤트 배지>");
         System.out.println(badgeSort.name() + "\n");
     }
