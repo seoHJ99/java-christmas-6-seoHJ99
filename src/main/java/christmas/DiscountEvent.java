@@ -100,7 +100,12 @@ public class DiscountEvent {
         return 0;
     }
 
-    public Map<String, Integer> getAllDiscountsMap() {
+    public Map<String, Integer> getAllDiscountsMap(int fullPrice) {
+        int specialDiscount = getSpecialDiscount();
+        int dayDiscount = getDiscountPerSort();
+        int christmasDDayDiscount = getChristmasDDayDiscount();
+        int champagnePresentation = getChampagnePresentation(fullPrice);
+        allDiscounts.put("allBenefits", specialDiscount+dayDiscount+christmasDDayDiscount+champagnePresentation);
         return allDiscounts;
     }
 }
