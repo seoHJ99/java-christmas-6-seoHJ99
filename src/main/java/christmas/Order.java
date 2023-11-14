@@ -59,7 +59,7 @@ public class Order {
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
             String[] splitOrder = oneMenu.split("-");
-            if(splitOrder[0].matches(".*[0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?].*")){
+            if(splitOrder[0].matches(".*[0-9!@#$%^&*()_+\\-=\\[\\]{};':\",.<>?\\s].*")){
                 throw new IllegalArgumentException("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
             }
             if(!splitOrder[1].matches("[0-9]+") || Integer.parseInt(splitOrder[1]) < 0){
